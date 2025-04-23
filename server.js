@@ -16,4 +16,4 @@ app.post('/save-location', (req, res) => {
     });
 });
 
-app.listen(3000, () => console.log("✅ Serverul rulează pe portul 3000"));
+app.listen(3000, () => console.log("✅ Serverul sper ca rulează pe portul 3000"));
