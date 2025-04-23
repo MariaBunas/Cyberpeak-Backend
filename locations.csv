@@ -1,1 +1,6 @@
+name,severity,latitude,longitude
+Location A,bad,45.7489,21.2087
+Location B,warning,44.4268,26.1025
+Location C,ok,46.7712,23.6236
+c.d.loga,ok,45.752914041430714,21.23461317559228
 
