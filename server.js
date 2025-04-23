@@ -12,7 +12,7 @@ app.use(cors());
 const upload = multer({ dest: 'uploads/' });
 
 // 📌 Endpoint pentru salvarea locației + imaginii
-app.post('/save-location-image', upload.single('image'), (req, res) => {
+app.post('/upload', upload.single('image'), (req, res) => {
     let newLocation = req.body.location;
     let imagePath = req.file ? `images/${req.file.filename}` : "No Image";
 
