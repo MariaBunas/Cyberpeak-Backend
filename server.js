@@ -3,7 +3,7 @@ const fs = require('fs');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
-const axios = require("axios");
+const axios = require('axios');
 
 const app = express();
 app.use(express.json());
@@ -33,10 +33,10 @@ app.post('/upload', upload.single('image'), (req, res) => {
 
 
 // GitHub repository details
-const githubImgUrl = "https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/uploads";
+const githubImgUrl = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/uploads';
 
 // Fetch available images dynamically from GitHub
-app.get("/images", async (req, res) => {
+app.get('/images', async (req, res) => {
     try {
         const response = await axios.get(githubImgUrl, { headers: { "User-Agent": "request" } });
         const imageFiles = response.data
@@ -51,7 +51,7 @@ app.get("/images", async (req, res) => {
 });
 
 // Serve individual images dynamically
-app.get("/image/:name", async (req, res) => {
+app.get('/image/:name', async (req, res) => {
     const imageName = req.params.name;
     try {
         const response = await axios.get(`${githubImgUrl}/${imageName}`, { responseType: "arraybuffer" });
