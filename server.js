@@ -37,7 +37,7 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     let imageNewPath = req.file ? `uploads/${req.file.filename}` : "No Image";
 
     console.log("Entering data_upload service");
-    console.log("Image filename: ${imageNewPath}");
+    console.log(`Image filename: ${imageNewPath}`);
     // return res.json({ message: "Upload successful!"});
 
     if (!latitude || !longitude || !imagePath) {
