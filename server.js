@@ -27,10 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const upload = multer({ dest: 'uploads/' });
 
 // POST endpoint to receive image and location
-app.post("/api_upload", upload.single("file"), (req, res) => {
-
-    console.log(`Entering api_upload service');
-    
+app.post("/api_upload", upload.single("file"), (req, res) => {    
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
     const name = req.body.name;
@@ -38,7 +35,10 @@ app.post("/api_upload", upload.single("file"), (req, res) => {
     const image = req.body.image;
     const imagePath = req.file ? req.file.path : null;
 
+    console.log("Entering api_upload service");
+
     if (!latitude || !longitude || !imagePath) {
+        console.log("Invalid data received");
         return res.status(400).json({ message: "Invalid data received" });
     }
 
