@@ -36,7 +36,7 @@ app.post("/api_upload", upload.single("file"), (req, res) => {
     // const imagePath = req.file ? req.file.path : null;
 
     console.log("Entering api_upload service");
-    res.json({ message: "Upload successful!"});
+    return res.json({ message: "Upload successful!"});
 
     // if (!latitude || !longitude || !imagePath) {
     //     console.log("Invalid data received");
