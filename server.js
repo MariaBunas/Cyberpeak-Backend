@@ -4,13 +4,48 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const axios = require('axios');
+const bodyParser = require("body-parser");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors()); // Allow requests from different origins
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Set up multer for handling file uploads
+//const storage = multer.diskStorage({
+//    destination: function (req, file, cb) {
+//        cb(null, "uploads/");
+//    },
+//    filename: function (req, file, cb) {
+//        cb(null, Date.now() + "-" + file.originalname);
+//    },
+//});
+//const upload = multer({ storage: storage });
 
 // 📌 Configurare pentru salvarea imaginilor
 const upload = multer({ dest: 'uploads/' });
+
+// POST endpoint to receive image and location
+app.post("/api/upload", upload.single("file"), (req, res) => {
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
+    const name = req.body.name;
+    const severity = req.body.severity;
+    const image = req.body.image;
+    const imagePath = req.file ? req.file.path : null;
+
+    if (!latitude || !longitude || !imagePath) {
+        return res.status(400).json({ message: "Invalid data received" });
+    }
+
+    console.log(`Received name, severity: (${name}, ${severity})`);
+    console.log(`Received location: (${latitude}, ${longitude})`);
+    console.log(`Received image: ${image}`);
+    console.log(`Image saved at: ${imagePath}`);
+
+    res.json({ message: "Upload successful!", name, severity, imagePath, latitude, longitude });
+});
 
 // 📌 Endpoint pentru salvarea locației + imaginii
 app.post('/upload', upload.single('image'), (req, res) => {
