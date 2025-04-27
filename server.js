@@ -28,26 +28,27 @@ const upload = multer({ dest: 'uploads/' });
 
 // POST endpoint to receive image and location
 app.post("/api_upload", upload.single("file"), (req, res) => {    
-    const latitude = req.body.latitude;
-    const longitude = req.body.longitude;
-    const name = req.body.name;
-    const severity = req.body.severity;
-    const image = req.body.image;
-    const imagePath = req.file ? req.file.path : null;
+    // const latitude = req.body.latitude;
+    // const longitude = req.body.longitude;
+    // const name = req.body.name;
+    // const severity = req.body.severity;
+    // const image = req.body.image;
+    // const imagePath = req.file ? req.file.path : null;
 
     console.log("Entering api_upload service");
+    res.json({ message: "Upload successful!", "ok");
 
-    if (!latitude || !longitude || !imagePath) {
-        console.log("Invalid data received");
-        return res.status(400).json({ message: "Invalid data received" });
-    }
+    // if (!latitude || !longitude || !imagePath) {
+    //     console.log("Invalid data received");
+    //     return res.status(400).json({ message: "Invalid data received" });
+    // }
 
-    console.log(`Received name, severity: (${name}, ${severity})`);
-    console.log(`Received location: (${latitude}, ${longitude})`);
-    console.log(`Received image: ${image}`);
-    console.log(`Image saved at: ${imagePath}`);
+    // console.log(`Received name, severity: (${name}, ${severity})`);
+    // console.log(`Received location: (${latitude}, ${longitude})`);
+    // console.log(`Received image: ${image}`);
+    // console.log(`Image saved at: ${imagePath}`);
 
-    res.json({ message: "Upload successful!", name, severity, imagePath, latitude, longitude });
+    // res.json({ message: "Upload successful!", name, severity, imagePath, latitude, longitude });
 });
 
 // 📌 Endpoint pentru salvarea locației + imaginii
