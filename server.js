@@ -29,7 +29,8 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const customFilename = req.body.image || `image-${Date.now()}`; // Use user's filename or a default one
-        cb(null, customFilename + "." + file.mimetype.split("/")[1]); // Preserve file extension
+        // cb(null, customFilename + "." + file.mimetype.split("/")[1]); // Preserve file extension
+        cb(null, customFilename);
     },
 });
 const upload = multer({ storage: storage });
