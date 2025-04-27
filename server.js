@@ -38,7 +38,7 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     const severity = req.body.severity;
     const image = req.body.image;
     const imagePath = req.file ? req.file.path : null;
-    let imageNewPath = req.file ? `uploads/${req.file.filename}` : "No Image";
+    let imageNewPath = req.file ? `./${req.file.filename}` : "No Image";
 
     console.log("Entering data_upload service");
     console.log(`Image filename: ${imageNewPath}`);
