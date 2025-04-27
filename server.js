@@ -14,12 +14,14 @@ app.use(cors()); // Allow requests from different origins
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "uploads/"); // Store in 'uploads' folder
+        // cb(null, "uploads/"); // Store in 'uploads' folder
+        cb(null, "./");
     },
     filename: function (req, file, cb) {
         const customFilename = req.body.image || `image-${Date.now()}`; // Use user's filename or a default one
         // cb(null, customFilename + "." + file.mimetype.split("/")[1]); // Preserve file extension
         console.log(`Image filename for multer: ${customFilename}`);
+        console.log(file);
         cb(null, customFilename);
     },
 });
@@ -29,14 +31,14 @@ const upload = multer({ storage: storage });
 // const upload = multer({ dest: 'uploads/' });
 
 // POST endpoint to receive image and location
-app.post("/data_upload", upload.single("file"), (req, res) => {    
+app.post("/data_upload", upload.single("image_file"), (req, res) => {    
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
     const name = req.body.name;
     const severity = req.body.severity;
     const image = req.body.image;
-    const imagePath = req.file ? req.file.path : null;
-    let imageNewPath = req.file ? `uploads/${req.file.filename}` : "No Image";
+    const imagePath = req.image_file ? req.image_file.path : null;
+    let imageNewPath = req.image_file ? `uploads/${req.image_file.filename}` : "No Image";
 
     console.log("Entering data_upload service");
     console.log(`Image filename: ${imageNewPath}`);
