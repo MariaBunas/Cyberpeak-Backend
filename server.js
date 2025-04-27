@@ -23,8 +23,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //});
 //const upload = multer({ storage: storage });
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/"); // Store in 'uploads' folder
+    },
+    filename: function (req, file, cb) {
+        const customFilename = req.body.image || `image-${Date.now()}`; // Use user's filename or a default one
+        cb(null, customFilename + "." + file.mimetype.split("/")[1]); // Preserve file extension
+    },
+});
+const upload = multer({ storage: storage });
+
 // 📌 Configurare pentru salvarea imaginilor
-const upload = multer({ dest: 'uploads/' });
+// const upload = multer({ dest: 'uploads/' });
 
 // POST endpoint to receive image and location
 app.post("/data_upload", upload.single("file"), (req, res) => {    
