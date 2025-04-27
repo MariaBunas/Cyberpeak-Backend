@@ -48,7 +48,8 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     console.log(`Received image: ${image}`);
     console.log(`Image saved at: ${imagePath}`);
 
-    res.json({ message: "Upload successful!", name, severity, imagePath, latitude, longitude });
+    // res.json({ message: "Upload successful!", name, severity, imagePath, latitude, longitude });
+    res.json({ message: "Upload successful!", name, severity, image, latitude, longitude });
 });
 
 // 📌 Endpoint pentru salvarea locației + imaginii
