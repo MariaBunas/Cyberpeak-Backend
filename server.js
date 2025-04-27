@@ -31,19 +31,19 @@ const upload = multer({ storage: storage });
 // const upload = multer({ dest: 'uploads/' });
 
 // POST endpoint to receive image and location
-app.post("/data_upload", upload.single("image_file"), (req, res) => {    
+app.post("/data_upload", upload.single("file"), (req, res) => {    
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
     const name = req.body.name;
     const severity = req.body.severity;
     const image = req.body.image;
-    const imagePath = req.image_file ? req.image_file.path : null;
-    let imageNewPath = req.image_file ? `uploads/${req.image_file.filename}` : "No Image";
+    const imagePath = req.file ? req.file.path : null;
+    let imageNewPath = req.file ? `uploads/${req.file.filename}` : "No Image";
 
     console.log("Entering data_upload service");
     console.log(`Image filename: ${imageNewPath}`);
-    // return res.json({ message: "Upload successful!"});
-
+    console.log(`Image file path: ${imagePath}`);
+    
     if (!latitude || !longitude || !imagePath) {
         console.log("Invalid data received");
         return res.status(400).json({ message: "Invalid data received" });
