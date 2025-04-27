@@ -4,13 +4,13 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const axios = require('axios');
-//const bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 
 const app = express();
 app.use(express.json());
 app.use(cors()); // Allow requests from different origins
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
