@@ -28,6 +28,9 @@ const upload = multer({ dest: 'uploads/' });
 
 // POST endpoint to receive image and location
 app.post("/api_upload", upload.single("file"), (req, res) => {
+
+    console.log(`Entering api_upload service');
+    
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
     const name = req.body.name;
