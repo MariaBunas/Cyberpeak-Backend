@@ -6,6 +6,9 @@ const path = require('path');
 const axios = require('axios');
 const bodyParser = require("body-parser");
 
+var csvWriter = require('csv-write-stream');
+var writer = csvWriter({sendHeaders: false}); //Instantiate var
+
 const app = express();
 app.use(express.json());
 app.use(cors()); // Allow requests from different origins
@@ -64,8 +67,8 @@ getFileTree( dir, (err, res) => {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // cb(null, "uploads/"); // Store in 'uploads' folder
-        cb(null, "./");
+        cb(null, "uploads/"); // Store in 'uploads' folder
+        // cb(null, "./");
     },
     filename: function (req, file, cb) {
         const customFilename = req.body.image || `image-${Date.now()}`; // Use user's filename or a default one
@@ -82,7 +85,7 @@ const upload = multer({ storage: storage });
 
 // POST endpoint to receive image and location
 app.post("/data_upload", upload.single("file"), (req, res) => { 
-// app.post("/data_upload", (req, res) => {
+
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
     const locationName = req.body.name;
@@ -105,20 +108,52 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     console.log(`Received image: ${image}`);
     console.log(`Image saved at: ${imagePath}`);
 
+    // save data to server file
+    var csvFilename = "myfile.csv";
+    
+    // If CSV file does not exist, create it and add the headers
+    if (!fs.existsSync(csvFilename)) {
+      writer = csvWriter({sendHeaders: false});
+      writer.pipe(fs.createWriteStream(csvFilename));
+      writer.write({
+        header1: 'DATE',
+        header2: 'LASTNAME',
+        header3: 'FIRSTNAME'
+      });
+      writer.end();
+    } 
+    
+    // Append some data to CSV the file    
+    writer = csvWriter({sendHeaders: false});
+    writer.pipe(fs.createWriteStream(csvFilename, {flags: 'a'}));
+    writer.write({
+      header1: '2018-12-31',
+      header2: 'Smith',
+      header3: 'John'
+    });
+    writer.end();
+    
+    // Append more data to CSV the file    
+    writer = csvWriter({sendHeaders: false});
+    writer.pipe(fs.createWriteStream(csvFilename, {flags: 'a'}));
+    writer.write({
+      header1: '2019-01-01',
+      header2: 'Jones',
+      header3: 'Bob'
+    });
+    writer.end();
     
     // 📍 Salvăm locația în CSV
     // name	severity latitude longitude image
-    //const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/locations.csv';
-    // const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/refs/heads/main/locations.csv';
     const dataFile = 'locations.csv';
-    fs.appendFile(dataFile, `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
+//    fs.appendFile(dataFile, `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
         //if (err) {
        //     console.error("Eroare la salvare date:", err);
         //    res.status(500).send("Eroare la salvare date.");
        // } else {
-            res.send("Locație + Imagine salvate!");
+  //          res.send("Locație + Imagine salvate!");
       // }
-    });
+   // });
     
     // res.json({ message: "Upload successful!", locationName, severity, imagePath, latitude, longitude });
     res.json({ message: "Upload successful!", locationName, severity, image, latitude, longitude });
