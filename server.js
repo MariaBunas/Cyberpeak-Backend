@@ -33,7 +33,8 @@ fs.readdir(dir, function(err, list) {
                     };  
                 fs.stat(fullpath, function(err, stat) {
                     if (stat && stat.isDirectory()) {
-                        getFileTree(fullpath, addIt);
+                        // getFileTree(fullpath, addIt);
+                        console.log("Directory:" + fullpath);
                     } else {
                         addIt(null, null);
                     }   
