@@ -13,7 +13,7 @@ app.use(cors()); // Allow requests from different origins
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const dir = "./uploads/";
+const dir = "./uploads";
 var results = {}; 
 fs.readdir(dir, function(err, list) {
     if (err) {
