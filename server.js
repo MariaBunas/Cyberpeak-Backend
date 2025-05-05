@@ -75,7 +75,9 @@ app.post('/upload', upload.single('image'), (req, res) => {
     let imagePath = req.file ? `images/${req.file.filename}` : "No Image";
 
     // 📍 Salvăm locația în CSV
-    fs.appendFile('locations.csv', `\n${newLocation},${imagePath}`, err => {
+    //const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/locations.csv';
+    const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/refs/heads/main/locations.csv';
+    fs.appendFile(dataFile, `\n${newLocation},${imagePath}`, err => {
         if (err) {
             console.error("Eroare la salvare:", err);
             res.status(500).send("Eroare la salvare.");
