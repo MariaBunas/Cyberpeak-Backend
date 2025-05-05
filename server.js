@@ -41,12 +41,13 @@ fs.readdir(dir, function(err, list) {
             }); 
         }
     }
-};
+});
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // cb(null, "uploads/"); // Store in 'uploads' folder
-        cb(null, "./");
+        // cb(null, "./");
+        cb(null, "https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/uploads")
     },
     filename: function (req, file, cb) {
         const customFilename = req.body.image || `image-${Date.now()}`; // Use user's filename or a default one
