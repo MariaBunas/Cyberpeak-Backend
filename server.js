@@ -157,6 +157,16 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
         }
     });
 
+
+    const { exec } = require('child_process');
+    exec('git config --global user.email "maria.bunas@e-cdloga.ro"', (err, stdout, stderr) => {
+        if (err) {
+            console.error("Error setting Git email:", err);
+        } else {
+            console.log("Git email set successfully.");
+        }
+    });
+    
     // save changes back to github repo as Renderer server doesn't store updates when restarted
     const repoPath = './uploads'; // path-to-your-cloned-repo'; // Replace with the correct path
     const git = simpleGit(repoPath);
