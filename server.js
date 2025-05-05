@@ -98,7 +98,8 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     // 📍 Salvăm locația în CSV
     // name	severity latitude longitude image
     //const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/locations.csv';
-    const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/refs/heads/main/locations.csv';
+    // const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/refs/heads/main/locations.csv';
+    const dataFile = 'locations.csv';
     fs.appendFile(dataFile, `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
         //if (err) {
        //     console.error("Eroare la salvare date:", err);
