@@ -42,7 +42,7 @@ function getFileTree(dir, cb) {
     }); 
 };
 
-const dir = "./uploads";
+const dir = "./";
 var results = {}; 
 fs.readdir(dir, function(err, list) {
     if (err) {
