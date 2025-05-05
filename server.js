@@ -166,7 +166,7 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
             console.log("Git email set successfully.");
         }
     });
-    exec('git config --global user.name "Maria Bunas"', (err, stdout, stderr) => {
+    exec('git config --global user.name "MariaBunas"', (err, stdout, stderr) => {
         if (err) {
             console.error("Error setting Git user:", err);
         } else {
