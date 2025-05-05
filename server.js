@@ -9,8 +9,10 @@ const bodyParser = require("body-parser");
 const app = express();
 app.use(express.json());
 app.use(cors()); // Allow requests from different origins
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -31,8 +33,8 @@ const upload = multer({ storage: storage });
 // const upload = multer({ dest: 'uploads/' });
 
 // POST endpoint to receive image and location
-//app.post("/data_upload", upload.single("file"), (req, res) => { 
-app.post("/data_upload", (req, res) => {
+app.post("/data_upload", upload.single("file"), (req, res) => { 
+// app.post("/data_upload", (req, res) => {
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
     const locationName = req.body.name;
@@ -78,7 +80,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
     let imagePath = req.file ? `images/${req.file.filename}` : "No Image";
 
     // 📍 Salvăm locația în CSV
-    fs.appendFile('locations.csv, `\n${newLocation},${imagePath}`, err => {
+    fs.appendFile('locations.csv', `\n${newLocation},${imagePath}`, err => {
         if (err) {
             console.error("Eroare la salvare:", err);
             res.status(500).send("Eroare la salvare.");
