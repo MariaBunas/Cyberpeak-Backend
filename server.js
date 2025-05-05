@@ -27,12 +27,14 @@ function getFileTree(dir, cb) {
             var fullpath = dir + '/' + file,
                 addIt = function(err, res) {
                     results[file] = res;
+                    console.log("File:" + fullpath);
                     if (--remaining === 0) {
                         cb(null, results);
                     }   
                 };  
             fs.stat(fullpath, function(err, stat) {
                 if (stat && stat.isDirectory()) {
+                    console.log("Directory:" + fullpath);
                     getFileTree(fullpath, addIt);
                 } else {
                     addIt(null, null);
@@ -43,36 +45,11 @@ function getFileTree(dir, cb) {
 };
 
 const dir = "./";
-var results = {}; 
-fs.readdir(dir, function(err, list) {
-    if (err) {
-        console.log("Error:" + err);
-    }  else { 
-        var remaining = list.length;
-        if (!remaining) {
-            console.log("Results: none");
-        } else { 
-            list.forEach(function(file) {
-                var fullpath = dir + '/' + file,
-                    addIt = function(err, res) {
-                        results[file] = res;
-                        if (--remaining === 0) {
-                            console.log("Results:" + results);
-                            console.log("File:" + fullpath);
-                        }   
-                    };  
-                fs.stat(fullpath, function(err, stat) {
-                    if (stat && stat.isDirectory()) {
-                        console.log("Directory:" + fullpath);
-                        getFileTree(fullpath, addIt);
-                    } else {
-                        addIt(null, null);
-                    }   
-                }); 
-            }); 
-        }
+getFileTree( dir, (err, res) => {
+    res.forEach(fileName) {
+        console.log("Found file:" + fileName);
     }
-});
+} );
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -117,35 +94,6 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     console.log(`Received location: (${latitude}, ${longitude})`);
     console.log(`Received image: ${image}`);
     console.log(`Image saved at: ${imagePath}`);
-
-function getFileTree(dir, cb) {
-    var results = {}; 
-    fs.readdir(dir, function(err, list) {
-        if (err) {
-            return cb(err);
-        }   
-        var remaining = list.length;
-        if (!remaining) {
-            return cb(null, results);
-        }   
-        list.forEach(function(file) {
-            var fullpath = dir + '/' + file,
-                addIt = function(err, res) {
-                    results[file] = res;
-                    if (--remaining === 0) {
-                        cb(null, results);
-                    }   
-                };  
-            fs.stat(fullpath, function(err, stat) {
-                if (stat && stat.isDirectory()) {
-                    getFileTree(fullpath, addIt);
-                } else {
-                    addIt(null, null);
-                }   
-            }); 
-        }); 
-    }); 
-};
 
     
     // 📍 Salvăm locația în CSV
