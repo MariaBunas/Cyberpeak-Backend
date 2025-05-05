@@ -44,10 +44,10 @@ function getFileTree(dir, cb) {
     }); 
 };
 
-const dir = "./";
+const dir = "./uploads";
 getFileTree( dir, (err, res) => {
-    res.forEach(function(fileName) {
-        console.log("Found file:" + fileName);
+    //res.forEach(function(fileName) {
+    //    console.log("Found file:" + fileName);
     });
 });
 
@@ -55,7 +55,6 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // cb(null, "uploads/"); // Store in 'uploads' folder
         cb(null, "./");
-        // cb(null, "https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/uploads")
     },
     filename: function (req, file, cb) {
         const customFilename = req.body.image || `image-${Date.now()}`; // Use user's filename or a default one
