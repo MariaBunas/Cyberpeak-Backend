@@ -13,6 +13,35 @@ app.use(cors()); // Allow requests from different origins
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const dir = "./";
+var results = {}; 
+fs.readdir(dir, function(err, list) {
+    if (err) {
+        console.log("Error:" + err);
+    }  else { 
+        var remaining = list.length;
+        if (!remaining) {
+            console.log("Results: none");
+        } else { 
+            list.forEach(function(file) {
+                var fullpath = dir + '/' + file,
+                    addIt = function(err, res) {
+                        results[file] = res;
+                        if (--remaining === 0) {
+                            console.log("Results:" + results);
+                        }   
+                    };  
+                fs.stat(fullpath, function(err, stat) {
+                    if (stat && stat.isDirectory()) {
+                        getFileTree(fullpath, addIt);
+                    } else {
+                        addIt(null, null);
+                    }   
+                }); 
+            }); 
+        }
+    }
+};
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -57,6 +86,36 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     console.log(`Received image: ${image}`);
     console.log(`Image saved at: ${imagePath}`);
 
+function getFileTree(dir, cb) {
+    var results = {}; 
+    fs.readdir(dir, function(err, list) {
+        if (err) {
+            return cb(err);
+        }   
+        var remaining = list.length;
+        if (!remaining) {
+            return cb(null, results);
+        }   
+        list.forEach(function(file) {
+            var fullpath = dir + '/' + file,
+                addIt = function(err, res) {
+                    results[file] = res;
+                    if (--remaining === 0) {
+                        cb(null, results);
+                    }   
+                };  
+            fs.stat(fullpath, function(err, stat) {
+                if (stat && stat.isDirectory()) {
+                    getFileTree(fullpath, addIt);
+                } else {
+                    addIt(null, null);
+                }   
+            }); 
+        }); 
+    }); 
+};
+
+    
     // 📍 Salvăm locația în CSV
     // name	severity latitude longitude image
     //const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/locations.csv';
