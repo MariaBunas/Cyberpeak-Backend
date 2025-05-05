@@ -166,7 +166,14 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
             console.log("Git email set successfully.");
         }
     });
-    
+    exec('git config --global user.name "MariaBunas"', (err, stdout, stderr) => {
+        if (err) {
+            console.error("Error setting Git user:", err);
+        } else {
+            console.log("Git user set successfully.");
+        }
+    });
+        
     // save changes back to github repo as Renderer server doesn't store updates when restarted
     const repoPath = './uploads'; // path-to-your-cloned-repo'; // Replace with the correct path
     const git = simpleGit(repoPath);
