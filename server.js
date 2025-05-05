@@ -109,7 +109,7 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     console.log(`Image saved at: ${imagePath}`);
 
     // save data to server file
-    var csvFilename = "myfile.csv";
+    var csvFilename = "./uploads/myfile.csv";
     
     // If CSV file does not exist, create it and add the headers
     if (!fs.existsSync(csvFilename)) {
