@@ -46,10 +46,10 @@ function getFileTree(dir, cb) {
 
 const dir = "./";
 getFileTree( dir, (err, res) => {
-    res.forEach(fileName) {
+    res.forEach(function(fileName) {
         console.log("Found file:" + fileName);
-    }
-} );
+    });
+});
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
