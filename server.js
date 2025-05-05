@@ -34,7 +34,7 @@ const upload = multer({ storage: storage });
 app.post("/data_upload", upload.single("file"), (req, res) => {    
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
-    const name = req.body.name;
+    const locationName = req.body.name;
     const severity = req.body.severity;
     const image = req.body.image;
     const imagePath = req.file ? req.file.path : null;
@@ -49,13 +49,24 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
         return res.status(400).json({ message: "Invalid data received" });
     }
 
-    console.log(`Received name, severity: (${name}, ${severity})`);
+    console.log(`Received name, severity: (${locationName}, ${severity})`);
     console.log(`Received location: (${latitude}, ${longitude})`);
     console.log(`Received image: ${image}`);
     console.log(`Image saved at: ${imagePath}`);
 
-    // res.json({ message: "Upload successful!", name, severity, imagePath, latitude, longitude });
-    res.json({ message: "Upload successful!", name, severity, image, latitude, longitude });
+    // 📍 Salvăm locația în CSV
+    // name	severity latitude longitude image
+    fs.appendFile('locations.csv', `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
+        if (err) {
+            console.error("Eroare la salvare date:", err);
+            res.status(500).send("Eroare la salvare date.");
+        } else {
+            res.send("Locație + Imagine salvate!");
+        }
+    });
+    
+    // res.json({ message: "Upload successful!", locationName, severity, imagePath, latitude, longitude });
+    res.json({ message: "Upload successful!", locationName, severity, image, latitude, longitude });
 });
 
 // 📌 Endpoint pentru salvarea locației + imaginii
