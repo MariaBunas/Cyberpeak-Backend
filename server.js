@@ -57,7 +57,9 @@ app.post("/data_upload", (req, res) => {
 
     // 📍 Salvăm locația în CSV
     // name	severity latitude longitude image
-    fs.appendFile('locations.csv', `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
+    //const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/locations.csv';
+    const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/refs/heads/main/locations.csv';
+    fs.appendFile(dataFile, `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
         //if (err) {
        //     console.error("Eroare la salvare date:", err);
         //    res.status(500).send("Eroare la salvare date.");
@@ -76,9 +78,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
     let imagePath = req.file ? `images/${req.file.filename}` : "No Image";
 
     // 📍 Salvăm locația în CSV
-    //const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/main/locations.csv';
-    const dataFile = 'https://raw.githubusercontent.com/MariaBunas/Cyberpeak-Backend/refs/heads/main/locations.csv';
-    fs.appendFile(dataFile, `\n${newLocation},${imagePath}`, err => {
+    fs.appendFile('locations.csv, `\n${newLocation},${imagePath}`, err => {
         if (err) {
             console.error("Eroare la salvare:", err);
             res.status(500).send("Eroare la salvare.");
