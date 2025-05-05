@@ -146,7 +146,7 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     
     // 📍 Salvăm locația în CSV
     // name	severity latitude longitude image
-    const dataFile = 'locations.csv';
+    const dataFile = './uploads/locations.csv';
     fs.appendFile(dataFile, `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
         if (err) {
             console.error("Eroare la salvare date:", err);
