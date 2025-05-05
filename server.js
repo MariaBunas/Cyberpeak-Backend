@@ -13,6 +13,17 @@ app.use(cors()); // Allow requests from different origins
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Granting both read and write permission to folder and file
+const writeFile = "locations.csv";
+console.log("\nGranting both read and write permission to user for " + writeFile); 
+fs.chmod(writeFile, fs.constants.S_IRUSR | fs.constants.S_IWUSR, () => { 
+    // Check the file mode 
+    console.log("Current File Mode:", fs.statSync(writeFile).mode); 
+    console.log("Trying to write to file"); 
+    // fs.writeFileSync(writeFile, "This file now has been edited."); 
+    // console.log("File Contents:", fs.readFileSync(writeFile, 'utf8')); 
+}); 
+
 function getFileTree(dir, cb) {
     var results = {}; 
     fs.readdir(dir, function(err, list) {
