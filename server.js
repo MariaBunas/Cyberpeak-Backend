@@ -164,23 +164,35 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     // Ensure the directory exists
     if (!fs.existsSync(repoPath)) {
         console.error("Repository path does not exist.");
-        process.exit(1);
-    }
-    
-    // Function to commit and push files
-    async function pushToGitHub() {
-        try {
-            await git.add('.');
-            await git.commit(`Auto-update: ${new Date().toISOString()}`);
-            await git.push('origin', 'main');
-            console.log("Changes pushed to GitHub successfully.");
-        } catch (err) {
-            console.error("Error pushing changes:", err);
+        // process.exit(1);
+    } else {
+
+        // GitHub repository details
+        const GITHUB_USERNAME = 'MariaBunas';
+        const GITHUB_REPO = 'Cyberpeak-Backend';
+        const GITHUB_PAT = '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';
+        
+        // Set repository URL with authentication
+        const REPO_URL = `https://${GITHUB_USERNAME}:${GITHUB_PAT}@github.com/${GITHUB_USERNAME}/${GITHUB_REPO}.git`;
+        
+        // Configure the Git instance
+        git.cwd('/uploads').addRemote('origin', REPO_URL); // '/path-to-your-local-repo') // Change to your repo directory
+        
+        // Function to commit and push files
+        async function pushToGitHub() {
+            try {
+                await git.add('.');
+                await git.commit(`Auto-update: ${new Date().toISOString()}`);
+                await git.push('origin', 'main');
+                console.log("Changes pushed to GitHub successfully.");
+            } catch (err) {
+                console.error("Error pushing changes:", err);
+            }
         }
+        
+        // Run at startup or periodically
+        pushToGitHub();
     }
-    
-    // Run at startup or periodically
-    pushToGitHub();
     
     // res.json({ message: "Upload successful!", locationName, severity, imagePath, latitude, longitude });
     res.json({ message: "Upload successful!", locationName, severity, image, latitude, longitude });
