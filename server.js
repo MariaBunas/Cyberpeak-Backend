@@ -13,6 +13,35 @@ app.use(cors()); // Allow requests from different origins
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+function getFileTree(dir, cb) {
+    var results = {}; 
+    fs.readdir(dir, function(err, list) {
+        if (err) {
+            return cb(err);
+        }   
+        var remaining = list.length;
+        if (!remaining) {
+            return cb(null, results);
+        }   
+        list.forEach(function(file) {
+            var fullpath = dir + '/' + file,
+                addIt = function(err, res) {
+                    results[file] = res;
+                    if (--remaining === 0) {
+                        cb(null, results);
+                    }   
+                };  
+            fs.stat(fullpath, function(err, stat) {
+                if (stat && stat.isDirectory()) {
+                    getFileTree(fullpath, addIt);
+                } else {
+                    addIt(null, null);
+                }   
+            }); 
+        }); 
+    }); 
+};
+
 const dir = "./uploads";
 var results = {}; 
 fs.readdir(dir, function(err, list) {
@@ -29,12 +58,13 @@ fs.readdir(dir, function(err, list) {
                         results[file] = res;
                         if (--remaining === 0) {
                             console.log("Results:" + results);
+                            console.log("File:" + fullpath);
                         }   
                     };  
                 fs.stat(fullpath, function(err, stat) {
                     if (stat && stat.isDirectory()) {
-                        // getFileTree(fullpath, addIt);
                         console.log("Directory:" + fullpath);
+                        getFileTree(fullpath, addIt);
                     } else {
                         addIt(null, null);
                     }   
