@@ -46,9 +46,9 @@ function getFileTree(dir, cb) {
 
 const dir = "./uploads";
 getFileTree( dir, (err, res) => {
-    //res.forEach(function(fileName) {
+    // res.forEach(function(fileName) {
     //    console.log("Found file:" + fileName);
-    });
+    // });
 });
 
 const storage = multer.diskStorage({
