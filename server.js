@@ -108,52 +108,52 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     console.log(`Received image: ${image}`);
     console.log(`Image saved at: ${imagePath}`);
 
-    // save data to server file
-    var csvFilename = "./uploads/myfile.csv";
+    // // save data to server file
+    // var csvFilename = "./uploads/myfile.csv";
     
-    // If CSV file does not exist, create it and add the headers
-    if (!fs.existsSync(csvFilename)) {
-      writer = csvWriter({sendHeaders: false});
-      writer.pipe(fs.createWriteStream(csvFilename));
-      writer.write({
-        header1: 'DATE',
-        header2: 'LASTNAME',
-        header3: 'FIRSTNAME'
-      });
-      writer.end();
-    } 
+    // // If CSV file does not exist, create it and add the headers
+    // if (!fs.existsSync(csvFilename)) {
+    //   writer = csvWriter({sendHeaders: false});
+    //   writer.pipe(fs.createWriteStream(csvFilename));
+    //   writer.write({
+    //     header1: 'DATE',
+    //     header2: 'LASTNAME',
+    //     header3: 'FIRSTNAME'
+    //   });
+    //   writer.end();
+    // } 
     
-    // Append some data to CSV the file    
-    writer = csvWriter({sendHeaders: false});
-    writer.pipe(fs.createWriteStream(csvFilename, {flags: 'a'}));
-    writer.write({
-      header1: '2018-12-31',
-      header2: 'Smith',
-      header3: 'John'
-    });
-    writer.end();
+    // // Append some data to CSV the file    
+    // writer = csvWriter({sendHeaders: false});
+    // writer.pipe(fs.createWriteStream(csvFilename, {flags: 'a'}));
+    // writer.write({
+    //   header1: '2018-12-31',
+    //   header2: 'Smith',
+    //   header3: 'John'
+    // });
+    // writer.end();
     
-    // Append more data to CSV the file    
-    writer = csvWriter({sendHeaders: false});
-    writer.pipe(fs.createWriteStream(csvFilename, {flags: 'a'}));
-    writer.write({
-      header1: '2019-01-01',
-      header2: 'Jones',
-      header3: 'Bob'
-    });
-    writer.end();
+    // // Append more data to CSV the file    
+    // writer = csvWriter({sendHeaders: false});
+    // writer.pipe(fs.createWriteStream(csvFilename, {flags: 'a'}));
+    // writer.write({
+    //   header1: '2019-01-01',
+    //   header2: 'Jones',
+    //   header3: 'Bob'
+    // });
+    // writer.end();
     
     // 📍 Salvăm locația în CSV
     // name	severity latitude longitude image
     const dataFile = 'locations.csv';
-//    fs.appendFile(dataFile, `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
+    fs.appendFile(dataFile, `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
         //if (err) {
        //     console.error("Eroare la salvare date:", err);
         //    res.status(500).send("Eroare la salvare date.");
        // } else {
   //          res.send("Locație + Imagine salvate!");
       // }
-   // });
+    });
     
     // res.json({ message: "Upload successful!", locationName, severity, imagePath, latitude, longitude });
     res.json({ message: "Upload successful!", locationName, severity, image, latitude, longitude });
