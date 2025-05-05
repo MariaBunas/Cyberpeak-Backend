@@ -31,7 +31,8 @@ const upload = multer({ storage: storage });
 // const upload = multer({ dest: 'uploads/' });
 
 // POST endpoint to receive image and location
-app.post("/data_upload", upload.single("file"), (req, res) => {    
+//app.post("/data_upload", upload.single("file"), (req, res) => { 
+app.post("/data_upload", (req, res) => {
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
     const locationName = req.body.name;
@@ -57,12 +58,12 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
     // 📍 Salvăm locația în CSV
     // name	severity latitude longitude image
     fs.appendFile('locations.csv', `\n${locationName},${severity},${latitude},${longitude},${image}`, err => {
-        if (err) {
-            console.error("Eroare la salvare date:", err);
-            res.status(500).send("Eroare la salvare date.");
-        } else {
+        //if (err) {
+       //     console.error("Eroare la salvare date:", err);
+        //    res.status(500).send("Eroare la salvare date.");
+       // } else {
             res.send("Locație + Imagine salvate!");
-        }
+      // }
     });
     
     // res.json({ message: "Upload successful!", locationName, severity, imagePath, latitude, longitude });
