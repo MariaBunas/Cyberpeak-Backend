@@ -187,7 +187,7 @@ app.post("/data_upload", upload.single("file"), (req, res) => {
         // GitHub repository details
         const GITHUB_USERNAME = 'MariaBunas';
         const GITHUB_REPO = 'Cyberpeak-Backend';
-        const GITHUB_PAT = '.......';
+        const GITHUB_PAT = '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';
         
         // Set repository URL with authentication
         const REPO_URL = `https://${GITHUB_USERNAME}:${GITHUB_PAT}@github.com/${GITHUB_USERNAME}/${GITHUB_REPO}.git`;
