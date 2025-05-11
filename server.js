@@ -16,6 +16,7 @@ const auth = new google.auth.GoogleAuth({
 });
 const drive = google.drive({ version: 'v3', auth });
 
+/*
 var csvWriter = require('csv-write-stream');
 var writer = csvWriter({sendHeaders: false}); //Instantiate var
 
@@ -92,6 +93,7 @@ const upload = multer({ storage: storage });
 
 // 📌 Configurare pentru salvarea imaginilor
 // const upload = multer({ dest: 'uploads/' });
+*/
 
 const API_KEY = "AIzaSyBE4jeVMYnAio8DgHU8EudkIJyA_M3odFU"; // Replace with your actual API key
 
@@ -214,6 +216,7 @@ app.post("/data_append", (req, res) => {
     res.json({ message: "Append to CSV successful!", locationName, severity, latitude, longitude, image });
 });
 
+/*
 // POST endpoint to receive image and location
 app.post("/data_upload", upload.single("file"), (req, res) => { 
 
@@ -395,6 +398,7 @@ app.get('/image/:name', async (req, res) => {
         res.status(500).send("Error fetching image");
     }
 });
+*/
 
 // 📌 Pornirea serverului pe portul 3000
 app.listen(3000, () => console.log("✅ Serverul rulează pe portul 3000"));
