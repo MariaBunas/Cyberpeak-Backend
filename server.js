@@ -11,10 +11,9 @@ const { google } = require('googleapis');
 const { parse } = require('papaparse');
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: 'path-to-your-service-account.json',
+  keyFile: 'service-account.json',
   scopes: ['https://www.googleapis.com/auth/drive'],
 });
-
 const drive = google.drive({ version: 'v3', auth });
 
 var csvWriter = require('csv-write-stream');
