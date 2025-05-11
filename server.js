@@ -7,6 +7,16 @@ const axios = require('axios');
 const bodyParser = require("body-parser");
 const simpleGit = require('simple-git');
 
+const { google } = require('googleapis');
+const { parse } = require('papaparse');
+
+const auth = new google.auth.GoogleAuth({
+  keyFile: 'path-to-your-service-account.json',
+  scopes: ['https://www.googleapis.com/auth/drive'],
+});
+
+const drive = google.drive({ version: 'v3', auth });
+
 var csvWriter = require('csv-write-stream');
 var writer = csvWriter({sendHeaders: false}); //Instantiate var
 
@@ -83,6 +93,99 @@ const upload = multer({ storage: storage });
 
 // 📌 Configurare pentru salvarea imaginilor
 // const upload = multer({ dest: 'uploads/' });
+
+const API_KEY = "AIzaSyBE4jeVMYnAio8DgHU8EudkIJyA_M3odFU"; // Replace with your actual API key
+
+var locationsCsvFileId = null;
+var listOfFiles = new Map();
+
+async function getLocationsCsvFileId() {
+
+    const fileNameLocationsCsv = "locations.csv";
+
+    // searching it for the first time
+    if (!locationsCsvFileId ) {
+        const folderId = "1lCpQoNRIPs6Q294Vt7JwDoq5GhPKEf6b";
+        const url = "https://www.googleapis.com/drive/v3/files?q='" + folderId + "'+in+parents&key=" + API_KEY;
+        const response = await fetch(url);
+        const data = await response.json();
+    
+        console.log("Reading file list from GDrive folder: ");
+        
+        if (data.files && data.files.length > 0) {
+            for(var i=0; i<data.files.length; i++)
+            {
+                listOfFiles.set(data.files[i].name, data.files[i].id);
+                console.log("File: " + data.files[i].name);
+            }
+        }
+
+        // get fiel id based on file name used as Key in the map data structure
+        locationsCsvFileId = listOfFiles.get(fileNameLocationsCsv);
+    }
+    
+    return locationsCsvFileId;
+}
+
+async function appendToCsv(newRow) {
+
+  getLocationsCsvFileId()
+    .then( csvFileId => {
+    
+      // Download the existing CSV file
+      const response = await drive.files.get({
+        csvFileId,
+        alt: 'media',
+      });
+    
+      const csvData = response.data;
+      const rows = parse(csvData, { header: false }).data;
+    
+      // Append new row
+      rows.push(newRow);
+    
+      // Convert back to CSV format
+      const updatedCsv = rows.map(r => r.join(',')).join('\n');
+    
+      // Upload the modified file back to Drive
+      const fileMetadata = { name: 'updated.csv' };
+      const media = { mimeType: 'text/csv', body: Buffer.from(updatedCsv) };
+    
+      await drive.files.update({
+        csvFileId,
+        media,
+        resource: fileMetadata,
+      });
+    
+      console.log('CSV file updated successfully');
+    }
+}
+
+app.post("/data_append", (req, res) => { 
+    
+    const locationName = req.body.name;
+    const severity = req.body.severity;
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
+    const image = req.body.image;
+
+    console.log(`Received name, severity: (${locationName}, ${severity})`);
+    console.log(`Received location: (${latitude}, ${longitude})`);
+    console.log(`Received image: ${image}`);
+
+    // New location data to append
+    const newRow = [locationName, severity, latitude, longitude, image];
+    // newRow.push(locationName);
+    // newRow.push(severity);
+    // newRow.push(latitude);
+    // newRow.push(longitude);
+    // newRow.push(image);
+    
+    // Call the function with the file ID
+    appendToCsv(newRow);
+    
+    res.json({ message: "Append to CSV successful!", locationName, severity, latitude, longitude, image });
+});
 
 // POST endpoint to receive image and location
 app.post("/data_upload", upload.single("file"), (req, res) => { 
