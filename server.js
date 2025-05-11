@@ -209,7 +209,7 @@ app.post("/data_append", (req, res) => {
     // newRow.push(image);
     
     // Call the function with the file ID
-    appendToCsv(newRow);
+    // appendToCsv(newRow);
     
     res.json({ message: "Append to CSV successful!", locationName, severity, latitude, longitude, image });
 });
