@@ -131,33 +131,61 @@ async function appendToCsv(newRow) {
   getLocationsCsvFileId()
     .then( csvFileId => {
     
+      // // Download the existing CSV file
+      // const response = await drive.files.get({
+      //   csvFileId,
+      //   alt: 'media',
+      // });
+    
+      // const csvData = response.data;
+      // const rows = parse(csvData, { header: false }).data;
+    
+      // // Append new row
+      // rows.push(newRow);
+    
+      // // Convert back to CSV format
+      // const updatedCsv = rows.map(r => r.join(',')).join('\n');
+    
+      // // Upload the modified file back to Drive
+      // const fileMetadata = { name: 'updated.csv' };
+      // const media = { mimeType: 'text/csv', body: Buffer.from(updatedCsv) };
+    
+      // await drive.files.update({
+      //   csvFileId,
+      //   media,
+      //   resource: fileMetadata,
+      // });
+
       // Download the existing CSV file
-      const response = await drive.files.get({
+      const getFilePromise = drive.files.get({
         csvFileId,
         alt: 'media',
       });
-    
-      const csvData = response.data;
-      const rows = parse(csvData, { header: false }).data;
-    
-      // Append new row
-      rows.push(newRow);
-    
-      // Convert back to CSV format
-      const updatedCsv = rows.map(r => r.join(',')).join('\n');
-    
-      // Upload the modified file back to Drive
-      const fileMetadata = { name: 'updated.csv' };
-      const media = { mimeType: 'text/csv', body: Buffer.from(updatedCsv) };
-    
-      await drive.files.update({
-        csvFileId,
-        media,
-        resource: fileMetadata,
+      getFilePromise. then ( csvData => {
+      
+        const rows = parse(csvData, { header: false }).data;
+      
+        // Append new row
+        rows.push(newRow);
+      
+        // Convert back to CSV format
+        const updatedCsv = rows.map(r => r.join(',')).join('\n');
+      
+        // Upload the modified file back to Drive
+        const fileMetadata = { name: 'updated.csv' };
+        const media = { mimeType: 'text/csv', body: Buffer.from(updatedCsv) };
+      
+        const appedCsvPromise = drive.files.update({
+          csvFileId,
+          media,
+          resource: fileMetadata,
+        });
+        appedCsvPromise.then( () => {
+          console.log('CSV file updated successfully');
+        });
       });
-    
-      console.log('CSV file updated successfully');
-    }
+                            
+    });
 }
 
 app.post("/data_append", (req, res) => { 
