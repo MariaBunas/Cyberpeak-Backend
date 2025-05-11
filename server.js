@@ -24,10 +24,11 @@ const app = express();
 app.use(express.json());
 app.use(cors()); // Allow requests from different origins
 // app.use(bodyParser.json());
-/*
+
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/*
 // Granting both read and write permission to folder and file
 const writeFile = "locations.csv";
 console.log("\nGranting both read and write permission to user for " + writeFile); 
