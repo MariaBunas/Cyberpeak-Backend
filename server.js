@@ -19,11 +19,12 @@ const drive = google.drive({ version: 'v3', auth });
 /*
 var csvWriter = require('csv-write-stream');
 var writer = csvWriter({sendHeaders: false}); //Instantiate var
-
+*/
 const app = express();
 app.use(express.json());
 app.use(cors()); // Allow requests from different origins
 // app.use(bodyParser.json());
+/*
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
