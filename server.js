@@ -125,6 +125,9 @@ async function getLocationsCsvFileId() {
 
         // get fiel id based on file name used as Key in the map data structure
         locationsCsvFileId = listOfFiles.get(fileNameLocationsCsv);
+        if (locationsCsvFileId) {
+          console.log("Found locationas.csv file with G_ID: " + locationsCsvFileId);
+        }
     }
     
     return locationsCsvFileId;
@@ -166,19 +169,24 @@ async function appendToCsv(newRow) {
         alt: 'media',
       });
       getFilePromise. then ( csvData => {
-      
-        const rows = parse(csvData, { header: false }).data;
-      
+
+        console.log("Parsing csv data ..");
+        // const rows = parse(csvData, { header: false }).data;
+        const rows = parse(csvData, { header: true }).data;
+        
+        console.log("Adding new row ..");
         // Append new row
         rows.push(newRow);
       
         // Convert back to CSV format
+        console.log("Convert back to csv format ..");
         const updatedCsv = rows.map(r => r.join(',')).join('\n');
       
         // Upload the modified file back to Drive
         const fileMetadata = { name: 'updated.csv' };
         const media = { mimeType: 'text/csv', body: Buffer.from(updatedCsv) };
-      
+
+        console.log("Updating modified fiel back on G.Drive ..");
         const appedCsvPromise = drive.files.update({
           csvFileId,
           media,
@@ -214,7 +222,8 @@ app.post("/data_append", (req, res) => {
     
     // Call the function with the file ID
     appendToCsv(newRow);
-    
+
+    console.log("Returning from web service data_append ..");
     res.json({ message: "Append to CSV successful!", locationName, severity, latitude, longitude, image });
 });
 
