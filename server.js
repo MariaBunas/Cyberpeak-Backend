@@ -101,26 +101,26 @@ async function getLocationsCsvFileId() {
     const fileNameLocationsCsv = "locations.csv";
 
     // searching it for the first time
-    if (!locationsCsvFileId ) {
-        const folderId = "1lCpQoNRIPs6Q294Vt7JwDoq5GhPKEf6b";
-        const url = "https://www.googleapis.com/drive/v3/files?q='" + folderId + "'+in+parents&key=" + API_KEY;
-        const response = await fetch(url);
-        const data = await response.json();
+    // if (!locationsCsvFileId ) {
+    //     const folderId = "1lCpQoNRIPs6Q294Vt7JwDoq5GhPKEf6b";
+    //     const url = "https://www.googleapis.com/drive/v3/files?q='" + folderId + "'+in+parents&key=" + API_KEY;
+    //     const response = await fetch(url);
+    //     const data = await response.json();
     
-        console.log("Reading file list from GDrive folder: ");
+    //     console.log("Reading file list from GDrive folder: ");
         
-        if (data.files && data.files.length > 0) {
-            for(var i=0; i<data.files.length; i++)
-            {
-                listOfFiles.set(data.files[i].name, data.files[i].id);
-                console.log("File: " + data.files[i].name);
-            }
-        }
+    //     if (data.files && data.files.length > 0) {
+    //         for(var i=0; i<data.files.length; i++)
+    //         {
+    //             listOfFiles.set(data.files[i].name, data.files[i].id);
+    //             console.log("File: " + data.files[i].name);
+    //         }
+    //     }
 
         // get fiel id based on file name used as Key in the map data structure
-        locationsCsvFileId = listOfFiles.get(fileNameLocationsCsv);
+        locationsCsvFileId = "1bUyyBCnJTHX7VnxaD5Kn18QFdiAPX2c9";//listOfFiles.get(fileNameLocationsCsv);
         if (locationsCsvFileId) {
-          console.log("Found locationas.csv file with G_ID: " + locationsCsvFileId);
+          console.log("Found " + fileNameLocationsCsv + " file with G_ID: " + locationsCsvFileId);
         }
     }
     
