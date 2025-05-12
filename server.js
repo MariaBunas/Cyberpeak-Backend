@@ -122,7 +122,7 @@ async function getLocationsCsvFileId() {
         if (locationsCsvFileId) {
           console.log("Found " + fileNameLocationsCsv + " file with G_ID: " + locationsCsvFileId);
         }
-    }
+    //}
     
     return locationsCsvFileId;
 }
