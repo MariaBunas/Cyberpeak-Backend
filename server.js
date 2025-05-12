@@ -10,12 +10,6 @@ const simpleGit = require('simple-git');
 const { google } = require('googleapis');
 const { parse } = require('papaparse');
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: 'service-account.json',
-  scopes: ['https://www.googleapis.com/auth/drive'],
-});
-const drive = google.drive({ version: 'v3', auth });
-
 /*
 var csvWriter = require('csv-write-stream');
 var writer = csvWriter({sendHeaders: false}); //Instantiate var
@@ -163,6 +157,12 @@ async function appendToCsv(newRow) {
       //   resource: fileMetadata,
       // });
 
+      const auth = new google.auth.GoogleAuth({
+        keyFile: 'service-account.json',
+        scopes: ['https://www.googleapis.com/auth/drive'],
+      });
+      const drive = google.drive({ version: 'v3', auth });
+      
       // Download the existing CSV file
       const getFilePromise = drive.files.get({
         csvFileId,
