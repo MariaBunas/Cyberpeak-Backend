@@ -64,4 +64,43 @@ router.get('/auth/google/callback', async (req, res) => {
   }
 });
 
+router.get('/files', async (req, res) => {
+  try {
+    const response = await drive.files.list({
+      pageSize: 10, // Set the desired number of files to retrieve
+      fields: 'files(name, id)', // Specify the fields to include in the response
+    });
+    const files = response.data.files;
+    res.json(files);
+  } catch (err) {
+    console.error('Error listing files:', err);
+    res.status(500).json({ error: 'Failed to list files' });
+  }
+});
+
+router.post('/upload', upload.single('file'), async (req, res) => {
+  try {
+    const response = await drive.files.create({
+ 
+      resource: {
+        name: req.file.originalname, // Use the original filename for the uploaded file
+        mimeType: req.file.mimetype, // Set the MIME type of the file
+      },
+      media: {
+        mimeType: req.file.mimetype,
+        body: req.file.stream, // Use the file stream as the body of the request
+      },
+    });
+    res.json({ fileId: response.data.id });
+  } catch (err) {
+    console.error('Error uploading file:', err);
+    res.status(500).json({ error: 'Failed to upload file' });
+  }
+});
+
+const PORT = 3000; // Choose a port number of your choice
+router.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
 module.exports = router;
