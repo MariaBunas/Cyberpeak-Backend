@@ -40,13 +40,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
     });
     
     let fileMetadata = {
-            'name': 'icon.png',
+            'name': 'icon.jpg',
             'parents':  [  "1lCpQoNRIPs6Q294Vt7JwDoq5GhPKEf6b"  ]
         };
     
     let media = {
-            mimeType: 'image/png',
-            body: fs.createReadStream('TestMe.PNG')
+            mimeType: 'image/jpeg',
+            body: fs.createReadStream('TestMe.jpg')
         };
     
     let response = await driveService.files.create({
