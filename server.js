@@ -38,7 +38,7 @@ let fileMetadata = {
 
 let media = {
         mimeType: 'image/jpeg',
-        body: fs.createReadStream('icon.png')
+        body: fs.createReadStream('TestMe.png')
     };
 
 let response = await driveService.files.create({
