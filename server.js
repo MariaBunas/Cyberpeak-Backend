@@ -40,11 +40,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
     
     let fileMetadata = {
             'name': 'icon.png',
-            'parents':  [  '1lCpQoNRIPs6Q294Vt7JwDoq5GhPKEf6b'  ]
+            'parents':  [  "1lCpQoNRIPs6Q294Vt7JwDoq5GhPKEf6b"  ]
         };
     
     let media = {
-            mimeType: 'image/jpeg',
+            mimeType: 'image/png',
             body: fs.createReadStream('TestMe.PNG')
         };
     
