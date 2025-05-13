@@ -31,6 +31,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
     });
     
     const driveService = google.drive({version: 'v3', auth});
+
+    console.log("Show current folder content: ");
+    const testFolder = './';
+    fs.readdirSync(testFolder).forEach(file => {
+      console.log(file);
+    });
     
     let fileMetadata = {
             'name': 'icon.png',
@@ -39,7 +45,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
     
     let media = {
             mimeType: 'image/jpeg',
-            body: fs.createReadStream('TestMe.png')
+            body: fs.createReadStream('${__dirname}\\TestMe.png')
         };
     
     let response = await driveService.files.create({
