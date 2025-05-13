@@ -45,7 +45,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
     
     let media = {
             mimeType: 'image/jpeg',
-            body: fs.createReadStream('${__dirname}\\TestMe.png')
+            body: fs.createReadStream('TestMe.PNG')
         };
     
     let response = await driveService.files.create({
