@@ -51,7 +51,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
     let response = await driveService.files.create({
         resource: fileMetadata,
         media: media,
-        fields: 'id'
+        fields: 'id',
+        supportsAllDrives: true
     });
     
     switch(response.status){
